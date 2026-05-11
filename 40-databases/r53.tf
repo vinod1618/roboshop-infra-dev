@@ -3,7 +3,7 @@ resource "aws_route53_record" "mongodb" {
   name    = "mongodb-${var.environment}.${var.domain_name}"
   type    = "A"
   ttl     = 1
-  records = [aws_instance.mongodb.private_Ip]
+  records = [aws_instance.mongodb.private_ip]
   allow_overwrite = true
 }
 
@@ -14,7 +14,7 @@ resource "aws_route53_record" "redis" {
   name    = "redis-${var.environment}.${var.domain_name}"
   type    = "A"
   ttl     = 1
-  records = [aws_instance.redis.private_Ip]
+  records = [aws_instance.redis.private_ip]
   allow_overwrite = true
 }
 
@@ -24,6 +24,6 @@ resource "aws_route53_record" "mysql" {
   name    = "mysql-${var.environment}.${var.domain_name}"
   type    = "A"
   ttl     = 1
-  records = [aws_instance.mysql.private_Ip]
+  records = [aws_instance.mysql.private_ip]
   allow_overwrite = true
 }
