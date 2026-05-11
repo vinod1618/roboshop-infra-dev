@@ -17,3 +17,13 @@ resource "aws_route53_record" "redis" {
   records = [aws_instance.redis.private_Ip]
   allow_overwrite = true
 }
+
+
+resource "aws_route53_record" "mysql" {
+  zone_id = var.zone_id # Replace with your Hosted Zone ID
+  name    = "mysql-${var.environment}.${var.domain_name}"
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.mysql.private_Ip]
+  allow_overwrite = true
+}
