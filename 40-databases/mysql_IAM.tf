@@ -29,7 +29,11 @@ resource "aws_iam_role" "mysql" {
 resource "aws_iam_policy" "mysql" {
   name        = "RoboshopMySqlParameter"
   description = "A policy for mysql EC2 instance"
-  policy      = file("my-sql-iam-policy.json")
+  policy      = templatefile("my-sql-iam-policy.json",
+  {
+    environment = var.environment
+  }
+  )
 }
 
 
