@@ -24,3 +24,10 @@ resource "aws_iam_role" "mysql" {
     local.common_tags
   )
 }
+
+
+resource "aws_iam_policy" "mysql" {
+  name        = "RoboshopMySqlParameter"
+  description = "A policy for mysql EC2 instance"
+  policy      = file("my-sql-iam-policy.json")
+}
