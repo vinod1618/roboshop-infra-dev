@@ -134,7 +134,7 @@ resource "aws_launch_template" "catalogue" {
 
 # Autoscaling group
 
-/* resource "aws_autoscaling_group" "catalogue" {
+resource "aws_autoscaling_group" "catalogue" {
   name                      = "${var.project}-${var.environment}-catalogue"
   max_size                  = 10
   min_size                  = 1
@@ -159,12 +159,6 @@ resource "aws_launch_template" "catalogue" {
   timeouts {
     delete = "15m"
   }
-
-  tag {
-    key                 = "lorem"
-    value               = "ipsum"
-    propagate_at_launch = false
-  }
-} */
+}
 
 
