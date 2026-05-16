@@ -188,13 +188,9 @@ resource "aws_autoscaling_policy" "catalogue" {
     target_value = 70.0
 
   }
-
-
-
   name                   = "${var.project}-${var.environment}-catalogue"
   scaling_adjustment     = 4
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
 }
 
 
