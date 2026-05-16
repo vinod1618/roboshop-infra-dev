@@ -213,6 +213,6 @@ resource "terraform_data" "catalogue_delete" {
   depends_on = [aws_autoscaling_policy.catalogue]
   triggers_replace = [aws_instance.catalogue.id]
     provisioner "local-exec" {
-      command = "aws ec2 terminate-instances ${aws_instance.catalogue.id}"
+      command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
   }
 }
