@@ -31,3 +31,8 @@ data "aws_ami" "join_devops" {
     values = ["hvm"]
   }
 }
+
+
+data "aws_ssm_parameter" "backend_listener_arn" {
+  name  = "/${var.project}/${var.environment}/backend_listener_arn"
+}

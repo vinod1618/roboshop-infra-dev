@@ -150,11 +150,22 @@ resource "aws_autoscaling_group" "catalogue" {
   }
   vpc_zone_identifier       = [local.private_subnet_id]
 
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+    triggers = ["launch_template"]
+  }
+
   tag {
     key                 = "Name"
     value               = "${var.project}-${var.environment}-catalogue"
     propagate_at_launch = true
   }
+
+# within 15 min autoscaling should be successful. This block is a safeguard that tells Terraform:
+# “When deleting this Auto Scaling Group, be patient for up to 15 minutes before failing.
 
   timeouts {
     delete = "15m"
@@ -162,3 +173,52 @@ resource "aws_autoscaling_group" "catalogue" {
 }
 
 
+#Autoscalaning policy
+
+
+resource "aws_autoscaling_policy" "catalogue" {
+  autoscaling_group_name = aws_autoscaling_group.catalogue.name
+  policy_type            = "TargetTrackingScaling"
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+
+    target_value = 70.0
+  }
+
+
+
+  name                   = "${var.project}-${var.environment}-catalogue"
+  scaling_adjustment     = 4
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+}
+
+
+resource "aws_lb_listener_rule" "redirect_http_to_https" {
+  listener_arn = data.backend_listener_arn
+  priority = 10
+  action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.catalogue.arn
+  }
+
+  condition {
+    host_header {
+      values           = ["catalogue.backend_alb-${var.environment}.${var.domain_name}"]
+    }
+  }
+}
+
+# destroying the instance which is used for creating the AMI
+
+
+resource "terraform_data" "catalogue_delete" {
+  depends_on = [aws_autoscaling_policy.catalogue]
+  triggers_replace = [aws_instance.catalogue.id]
+    provisioner "local-exec" {
+      command = "aws ec2 terminate-instances ${aws_instance.catalogue.id}"
+  }
+}
