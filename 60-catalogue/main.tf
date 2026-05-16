@@ -72,7 +72,7 @@ resource "aws_lb_target_group" "catalogue" {
   health_check {
     healthy_threshold = 2
     interval = 10
-    matcher = 200-299
+    matcher = "200-299"
     path = "/health"
     protocol = "HTTP"
     timeout = 2
