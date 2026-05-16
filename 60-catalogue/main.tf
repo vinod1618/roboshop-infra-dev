@@ -201,7 +201,7 @@ resource "aws_lb_listener_rule" "redirect_http_to_https" {
 
   condition {
     host_header {
-      values           = ["catalogue.backend_alb-${var.environment}.${var.domain_name}"]
+      values           = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]
     }
   }
 }
