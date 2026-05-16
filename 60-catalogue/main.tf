@@ -198,7 +198,7 @@ resource "aws_autoscaling_policy" "catalogue" {
 
 
 resource "aws_lb_listener_rule" "redirect_http_to_https" {
-  listener_arn = data.backend_listener_arn
+  listener_arn = local.backend_listener_arn
   priority = 10
   action {
     type = "forward"
