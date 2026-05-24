@@ -16,7 +16,3 @@ variable "zone_id"{
 variable "domain_name"{
     default = "vinoddevops.online"
 }
-
-variable "app_version"{
-    default = v3
-}
